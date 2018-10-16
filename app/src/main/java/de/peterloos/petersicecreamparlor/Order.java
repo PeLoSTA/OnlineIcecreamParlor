@@ -1,7 +1,9 @@
 package de.peterloos.petersicecreamparlor;
 
+import android.support.annotation.NonNull;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties
@@ -14,6 +16,10 @@ public class Order {
 
     // mandatory: default constructor that takes no arguments
     public Order() {
+        this.container = "";
+        this.flavors = new ArrayList<>();
+        this.pickupName = "";
+        this.scoops = 0;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class Order {
 
     @SuppressWarnings("unused")
     public String getContainer() {
-        return container;
+        return this.container;
     }
 
     @SuppressWarnings("unused")
@@ -60,7 +66,7 @@ public class Order {
 
     @SuppressWarnings("unused")
     public List<String> getFlavors() {
-        return flavors;
+        return this.flavors;
     }
 
     @SuppressWarnings("unused")
@@ -68,9 +74,9 @@ public class Order {
         this.flavors = flavors;
     }
 
-    @SuppressWarnings("unused")
+    @NonNull
     public String getPickupName() {
-        return pickupName;
+        return this.pickupName;
     }
 
     @SuppressWarnings("unused")
@@ -80,7 +86,7 @@ public class Order {
 
     @SuppressWarnings("unused")
     public int getScoops() {
-        return scoops;
+        return this.scoops;
     }
 
     @SuppressWarnings("unused")
