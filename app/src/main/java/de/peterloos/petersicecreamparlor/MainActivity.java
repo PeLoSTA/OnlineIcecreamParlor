@@ -5,36 +5,66 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IItemClickListener {
 
-    private RecyclerViewPickupNamesAdapter adapter;
+    private static final String TAG = "PeLo_Main";
+
+    private DatabaseReference mOrdersReference;
+    private RecyclerView mPickupNamesRecyclerView;
+    private RecyclerViewPickupNamesAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
 
-        // test data to populate the recycler view with
-        ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
+        Log.v(TAG, "MainActivity::onCreate");
+
+        // initialize database
+        mOrdersReference = FirebaseDatabase.getInstance().getReference().child("orders");
 
         // set up recycler view for pickup names
-        RecyclerView recyclerView = this.findViewById(R.id.recyclerViewPickupNames);
+        mPickupNamesRecyclerView = this.findViewById(R.id.recyclerViewPickupNames);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewPickupNamesAdapter(this, animalNames);
-        // adapter.setClickListener(this);
+        mPickupNamesRecyclerView.setLayoutManager(layoutManager);
+
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(
-                        recyclerView.getContext(), layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        recyclerView.setAdapter(adapter);
+                        mPickupNamesRecyclerView.getContext(), layoutManager.getOrientation());
+        mPickupNamesRecyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.v(TAG, "MainActivity::onStart");
+
+        // listen for orders
+        mAdapter = new RecyclerViewPickupNamesAdapter(this, mOrdersReference);
+        mAdapter.setClickListener(this);
+        mPickupNamesRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v(TAG, "MainActivity::onStop");
+
+        // clean up orders listener
+        mAdapter.cleanupListener();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        String text = "You clicked " + mAdapter.getItem(position) + " on row number " + position;
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }
