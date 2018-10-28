@@ -2,11 +2,15 @@ package de.peterloos.petersicecreamparlor.parcels;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import de.peterloos.petersicecreamparlor.Globals;
+
+@SuppressWarnings("WeakerAccess")
 public class OrderParcel implements Parcelable {
 
     // member data
-    private int pickupId;
+    private long pickupId;
     private int scoops;
     private String[] flavors;
     private String container;
@@ -25,17 +29,17 @@ public class OrderParcel implements Parcelable {
 
     // system-defined c'tor from Parcel, reads back fields IN THE ORDER they were written
     public OrderParcel(Parcel pc) {
-        this.setPickupId(pc.readInt());
+        this.setPickupId(pc.readLong());
         this.setScoops(pc.readInt());
+        this.flavors = new String[this.getScoops()];
         pc.readStringArray(this.getFlavors());
         this.setContainer(pc.readString());
     }
 
     // user-defined c'tor
-    public OrderParcel(String pickupId, int scoops,String[] flavors, String container) {
-
-        // this.setPickupId(pickupId);
-        this.setPickupId(123);
+    public OrderParcel(long pickupId, int scoops, String[] flavors, String container) {
+        this.setPickupId(pickupId);
+        ;
         this.setScoops(scoops);
         this.setFlavors(flavors);
         this.setContainer(container);
@@ -49,22 +53,22 @@ public class OrderParcel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
 
-        parcel.writeInt(this.getPickupId());
+        parcel.writeLong(this.getPickupId());
         parcel.writeInt(this.getScoops());
         parcel.writeStringArray(this.getFlavors());
         parcel.writeString(this.getContainer());
     }
 
-    public int getPickupId() {
-        return pickupId;
+    public long getPickupId() {
+        return this.pickupId;
     }
 
-    public void setPickupId(int pickupId) {
+    public void setPickupId(long pickupId) {
         this.pickupId = pickupId;
     }
 
     public int getScoops() {
-        return scoops;
+        return this.scoops;
     }
 
     public void setScoops(int scoops) {
@@ -72,7 +76,7 @@ public class OrderParcel implements Parcelable {
     }
 
     public String[] getFlavors() {
-        return flavors;
+        return this.flavors;
     }
 
     public void setFlavors(String[] flavors) {
@@ -80,10 +84,39 @@ public class OrderParcel implements Parcelable {
     }
 
     public String getContainer() {
-        return container;
+        return this.container;
     }
 
     public void setContainer(String container) {
         this.container = container;
+    }
+
+    @Override
+    public String toString() {
+        return this.print();
+    }
+
+    @SuppressWarnings("unused")
+    private String print() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("PickupId: %d", this.pickupId));
+        sb.append(" - ");
+        sb.append(String.format("Num Scoops: %d", this.scoops));
+        sb.append(" - ");
+        sb.append(String.format("Container:  %s", this.container));
+        sb.append(" - ");
+
+        if (this.flavors == null) {
+            sb.append(String.format("flavors == null "));
+            sb.append(" - ");
+        } else {
+            sb.append(String.format("Flavors:"));
+            sb.append(" - ");
+            for (int i = 0; i < this.flavors.length; i++) {
+                sb.append(String.format("   %d: %s", (i + 1), this.flavors[i]));
+            }
+        }
+
+        return sb.toString();
     }
 }

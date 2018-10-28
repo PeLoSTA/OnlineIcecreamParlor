@@ -17,6 +17,7 @@ import de.peterloos.petersicecreamparlor.Globals;
 import de.peterloos.petersicecreamparlor.interfaces.IItemClickListener;
 import de.peterloos.petersicecreamparlor.R;
 import de.peterloos.petersicecreamparlor.adapters.RecyclerViewPickupNamesAdapter;
+import de.peterloos.petersicecreamparlor.models.OrderModel;
 import de.peterloos.petersicecreamparlor.parcels.OrderParcel;
 
 public class MainActivity extends AppCompatActivity implements IItemClickListener {
@@ -71,14 +72,9 @@ public class MainActivity extends AppCompatActivity implements IItemClickListene
     @Override
     public void onItemClick(View view, int position) {
 
-        String text = "You clicked " + mAdapter.getItem(position) + " on row number " + position;
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-
-        String pickupId = mAdapter.getItem(position);
-
-
+        OrderModel order = mAdapter.getOrder(position);
         Intent intent = new Intent(getApplicationContext(), DetailsViewActivity.class);
-        OrderParcel parcel = new OrderParcel(pickupId, 3, new String[] {"Vanilla", "Strawberry", "Chocolate"}, "cone");
+        OrderParcel parcel = new OrderParcel(order.getPickupName(), order.getScoops(), order.getFlavorsArray(), order.getContainer());
         intent.putExtra(Globals.ORDER_PARCEL, parcel);
         this.startActivity(intent);
     }

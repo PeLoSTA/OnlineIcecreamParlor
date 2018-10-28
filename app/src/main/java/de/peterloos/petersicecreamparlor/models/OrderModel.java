@@ -30,7 +30,7 @@ public class OrderModel {
     @SuppressWarnings("unused")
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("PickupName: %s", this.pickupName));
+        sb.append(String.format("PickupName: %d", this.pickupName));
         sb.append(" - ");
         sb.append(String.format("Num Scoops: %d", this.scoops));
         sb.append(" - ");
@@ -67,6 +67,16 @@ public class OrderModel {
     @SuppressWarnings("unused")
     public List<String> getFlavors() {
         return this.flavors;
+    }
+
+    @SuppressWarnings("unused")
+    public String[] getFlavorsArray() {
+        String tmp[] = new String[this.flavors.size()];
+        return this.flavors.toArray(tmp);
+
+//        String tmp[] = new String[this.flavors.size()];
+//        String [] result =  this.flavors.toArray(tmp);
+//        return result;
     }
 
     @SuppressWarnings("unused")
