@@ -1,5 +1,6 @@
 package de.peterloos.petersicecreamparlor;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import de.peterloos.petersicecreamparlor.parcels.OrderParcel;
 
 public class MainActivity extends AppCompatActivity implements IItemClickListener {
 
@@ -66,5 +69,13 @@ public class MainActivity extends AppCompatActivity implements IItemClickListene
 
         String text = "You clicked " + mAdapter.getItem(position) + " on row number " + position;
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+
+        String pickupId = mAdapter.getItem(position);
+
+
+        Intent intent = new Intent(getApplicationContext(), DetailsViewActivity.class);
+        OrderParcel parcel = new OrderParcel(pickupId, 3, new String[] {"Vanilla", "Strawberry", "Chocolate"}, "cone");
+        intent.putExtra(Globals.ORDER_PARCEL, parcel);
+        this.startActivity(intent);
     }
 }

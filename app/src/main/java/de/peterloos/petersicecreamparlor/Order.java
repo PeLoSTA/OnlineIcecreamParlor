@@ -11,14 +11,14 @@ public class Order {
 
     private String container;
     private List<String> flavors;
-    private String pickupName;
+    private long pickupName;
     private int scoops;
 
     // mandatory: default constructor that takes no arguments
     public Order() {
         this.container = "";
         this.flavors = new ArrayList<>();
-        this.pickupName = "";
+        this.pickupName = 0;
         this.scoops = 0;
     }
 
@@ -75,12 +75,12 @@ public class Order {
     }
 
     @NonNull
-    public String getPickupName() {
+    public long getPickupName() {
         return this.pickupName;
     }
 
     @SuppressWarnings("unused")
-    public void setPickupName(String pickupName) {
+    public void setPickupName(long pickupName) {
         this.pickupName = pickupName;
     }
 

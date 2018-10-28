@@ -49,8 +49,6 @@ class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 
 public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private static final String TAG = "PeLo_Recycler";
-
     private LayoutInflater mInflater;
 
     private DatabaseReference mDatabaseReference;
@@ -131,17 +129,17 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
             String key = dataSnapshot.getKey();
 
             // insert new pickup name into list
-            String pickupName = order.getPickupName();
+            long pickupName = order.getPickupName();
             mPickupNamesKeys.add(key);
-            mPickupNames.add(pickupName);
+            mPickupNames.add("PickupId: " + Long.toString(pickupName));
             notifyItemInserted(mPickupNames.size() - 1);
-            Log.v(TAG, "onChildAdded: added pickname  " + order.getPickupName());
+            Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
         }
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            Log.v(TAG, "onChildChanged");
+            Log.v(Globals.TAG, "onChildChanged");
         }
 
         @Override
@@ -159,22 +157,22 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
 
                 // update the recycler view
                 notifyItemRemoved(index);
-                Log.v(TAG, "onChildRemoved: removed pickname at " + Integer.toString(index));
+                Log.v(Globals.TAG, "onChildRemoved: removed pickname at " + Integer.toString(index));
             } else {
-                Log.w(TAG, "Internal Error: onChildRemoved: unknown_child = " + key);
+                Log.w(Globals.TAG, "Internal Error: onChildRemoved: unknown_child = " + key);
             }
         }
 
         @Override
         public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            Log.v(TAG, "onChildRemoved");
+            Log.v(Globals.TAG, "onChildRemoved");
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            Log.v(TAG, "onCancelled");
+            Log.v(Globals.TAG, "onCancelled");
         }
     }
 }
