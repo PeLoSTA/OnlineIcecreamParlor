@@ -1,4 +1,4 @@
-package de.peterloos.petersicecreamparlor;
+package de.peterloos.petersicecreamparlor.models;
 
 import android.support.annotation.NonNull;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Order {
+public class OrderModel {
 
     private String container;
     private List<String> flavors;
-    private String pickupName;
+    private long pickupName;
     private int scoops;
 
     // mandatory: default constructor that takes no arguments
-    public Order() {
+    public OrderModel() {
         this.container = "";
         this.flavors = new ArrayList<>();
-        this.pickupName = "";
+        this.pickupName = 0;
         this.scoops = 0;
     }
 
@@ -30,7 +30,7 @@ public class Order {
     @SuppressWarnings("unused")
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("PickupName: %s", this.pickupName));
+        sb.append(String.format("PickupName: %d", this.pickupName));
         sb.append(" - ");
         sb.append(String.format("Num Scoops: %d", this.scoops));
         sb.append(" - ");
@@ -70,17 +70,27 @@ public class Order {
     }
 
     @SuppressWarnings("unused")
+    public String[] getFlavorsArray() {
+        String tmp[] = new String[this.flavors.size()];
+        return this.flavors.toArray(tmp);
+
+//        String tmp[] = new String[this.flavors.size()];
+//        String [] result =  this.flavors.toArray(tmp);
+//        return result;
+    }
+
+    @SuppressWarnings("unused")
     public void setFlavors(List<String> flavors) {
         this.flavors = flavors;
     }
 
     @NonNull
-    public String getPickupName() {
+    public long getPickupName() {
         return this.pickupName;
     }
 
     @SuppressWarnings("unused")
-    public void setPickupName(String pickupName) {
+    public void setPickupName(long pickupName) {
         this.pickupName = pickupName;
     }
 

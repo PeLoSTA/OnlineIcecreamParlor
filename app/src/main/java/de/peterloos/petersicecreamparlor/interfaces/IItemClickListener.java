@@ -1,4 +1,4 @@
-package de.peterloos.petersicecreamparlor;
+package de.peterloos.petersicecreamparlor.interfaces;
 
 import android.view.View;
 
