@@ -1,4 +1,4 @@
-package de.peterloos.petersicecreamparlor;
+package de.peterloos.petersicecreamparlor.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,6 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.peterloos.petersicecreamparlor.Globals;
+import de.peterloos.petersicecreamparlor.interfaces.IItemClickListener;
+import de.peterloos.petersicecreamparlor.models.OrderModel;
+import de.peterloos.petersicecreamparlor.R;
 
 class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -94,7 +99,7 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
+    public String getItem(int id) {
         return mPickupNames.get(id);
     }
 
@@ -124,16 +129,16 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            // a new order has been added, add it to the displayed list
-            Order order = dataSnapshot.getValue(Order.class);
+            // a new orderModel has been added, add it to the displayed list
+            OrderModel orderModel = dataSnapshot.getValue(OrderModel.class);
             String key = dataSnapshot.getKey();
 
             // insert new pickup name into list
-            long pickupName = order.getPickupName();
+            long pickupName = orderModel.getPickupName();
             mPickupNamesKeys.add(key);
             mPickupNames.add("PickupId: " + Long.toString(pickupName));
             notifyItemInserted(mPickupNames.size() - 1);
-            Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
+            Log.v(Globals.TAG, "onChildAdded: added pickname  " + orderModel.getPickupName());
         }
 
         @Override

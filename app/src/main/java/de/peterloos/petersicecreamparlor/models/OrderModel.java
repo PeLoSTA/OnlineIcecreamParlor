@@ -1,4 +1,4 @@
-package de.peterloos.petersicecreamparlor;
+package de.peterloos.petersicecreamparlor.models;
 
 import android.support.annotation.NonNull;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Order {
+public class OrderModel {
 
     private String container;
     private List<String> flavors;
@@ -15,7 +15,7 @@ public class Order {
     private int scoops;
 
     // mandatory: default constructor that takes no arguments
-    public Order() {
+    public OrderModel() {
         this.container = "";
         this.flavors = new ArrayList<>();
         this.pickupName = 0;

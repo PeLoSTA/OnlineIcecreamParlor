@@ -1,4 +1,4 @@
-package de.peterloos.petersicecreamparlor;
+package de.peterloos.petersicecreamparlor.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import de.peterloos.petersicecreamparlor.Globals;
+import de.peterloos.petersicecreamparlor.interfaces.IItemClickListener;
+import de.peterloos.petersicecreamparlor.R;
+import de.peterloos.petersicecreamparlor.adapters.RecyclerViewPickupNamesAdapter;
 import de.peterloos.petersicecreamparlor.parcels.OrderParcel;
 
 public class MainActivity extends AppCompatActivity implements IItemClickListener {
