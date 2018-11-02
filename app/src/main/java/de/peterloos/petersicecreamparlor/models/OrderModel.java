@@ -26,6 +26,7 @@ public class OrderModel {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return this.print();
     }

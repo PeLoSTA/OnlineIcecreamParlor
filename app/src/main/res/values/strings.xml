@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Peters Icecream Parlor</string>
     <string name="list_of_available_orders">List of available Orders:</string>
+    <string name="check_out_order">Check out order</string>
+    <string name="yes_action">Yes</string>
+    <string name="no_action">No</string>
+    <string name="action_cancelled">Checkout cancelled !</string>
 </resources>

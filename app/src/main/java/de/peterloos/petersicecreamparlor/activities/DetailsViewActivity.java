@@ -23,12 +23,6 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
 
     private OrderParcel parcel;
 
-    private TextView textViewHeader;
-    private TextView textViewScoops;
-    private TextView textViewFlavors;
-    private TextView textViewContainer;
-    private Button buttonCheckout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,23 +45,23 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
         }
 
         // retrieve references of controls
-        this.textViewHeader = this.findViewById(R.id.textViewHeader);
-        this.textViewScoops = this.findViewById(R.id.textViewScoops);
-        this.textViewFlavors = this.findViewById(R.id.textViewFlavors);
-        this.textViewContainer = this.findViewById(R.id.textViewContainer);
-        this.buttonCheckout = this.findViewById(R.id.buttonCheckout);
-        this.buttonCheckout.setOnClickListener(this);
+        TextView textViewHeader = this.findViewById(R.id.textViewHeader);
+        TextView textViewScoops = this.findViewById(R.id.textViewScoops);
+        TextView textViewFlavors = this.findViewById(R.id.textViewFlavors);
+        TextView textViewContainer = this.findViewById(R.id.textViewContainer);
+        Button buttonCheckout = this.findViewById(R.id.buttonCheckout);
+        buttonCheckout.setOnClickListener(this);
 
         // fill text views with data
         String sHeader = "Order No. " + Long.toString(this.parcel.getPickupId());
-        this.textViewHeader.setText(sHeader);
+        textViewHeader.setText(sHeader);
 
         String sScoops = String.format(
                 Locale.getDefault(),
                 "%d scoops",
                 this.parcel.getScoops()
         );
-        this.textViewScoops.setText(sScoops);
+        textViewScoops.setText(sScoops);
 
         String sFlavors = "";
         String[] flavors = this.parcel.getFlavors();
@@ -78,12 +72,10 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
         } else if (flavors.length == 3) {
             sFlavors = flavors[0] + ", " + flavors[1] + " and " + flavors[2];
         }
-        this.textViewFlavors.setText(sFlavors);
+        textViewFlavors.setText(sFlavors);
 
         String sContainer = "Container: " + this.parcel.getContainer();
-        this.textViewContainer.setText(sContainer);
-
-        // this.key = parcel.getKey();
+        textViewContainer.setText(sContainer);
     }
 
     @Override
@@ -91,7 +83,7 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Checkout Order?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.yes_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
                 String msg = String.format(Locale.getDefault(), "Checking out order with id %d !",
@@ -106,11 +98,11 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
                 DetailsViewActivity.this.finish();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.no_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Toast.makeText(
                         DetailsViewActivity.this,
-                        "Checkout cancelled !",
+                        R.string.action_cancelled,
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -122,12 +114,8 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
 
     public void deleteOrder() {
 
-        // initialize database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child("orders").child(this.parcel.getKey());
-
-        if (ref != null) {
-            ref.removeValue();
-        }
+        ref.removeValue();
     }
 }

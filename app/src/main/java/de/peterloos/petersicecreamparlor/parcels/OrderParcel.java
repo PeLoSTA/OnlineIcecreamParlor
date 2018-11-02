@@ -2,9 +2,10 @@ package de.peterloos.petersicecreamparlor.parcels;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
-import de.peterloos.petersicecreamparlor.Globals;
+import java.util.Locale;
+
 
 @SuppressWarnings("WeakerAccess")
 public class OrderParcel implements Parcelable {
@@ -102,6 +103,7 @@ public class OrderParcel implements Parcelable {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return this.print();
     }
@@ -109,21 +111,21 @@ public class OrderParcel implements Parcelable {
     @SuppressWarnings("unused")
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("PickupId: %d", this.pickupId));
+        sb.append(String.format(Locale.getDefault(),"PickupId: %d", this.pickupId));
         sb.append(" - ");
-        sb.append(String.format("Num Scoops: %d", this.scoops));
+        sb.append(String.format(Locale.getDefault(),"Num Scoops: %d", this.scoops));
         sb.append(" - ");
-        sb.append(String.format("Container:  %s", this.container));
+        sb.append(String.format(Locale.getDefault(),"Container: %s", this.container));
         sb.append(" - ");
 
         if (this.flavors == null) {
-            sb.append(String.format("flavors == null "));
+            sb.append("flavors == null ");
             sb.append(" - ");
         } else {
-            sb.append(String.format("Flavors:"));
+            sb.append("Flavors:");
             sb.append(" - ");
             for (int i = 0; i < this.flavors.length; i++) {
-                sb.append(String.format("   %d: %s", (i + 1), this.flavors[i]));
+                sb.append(String.format(Locale.getDefault(),"   %d: %s", (i + 1), this.flavors[i]));
             }
         }
 

@@ -54,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+
         // inflate row layout from xml when needed
         View view = inflater.inflate(R.layout.recyclerview_row, parent,false);
         ViewHolder holder = new ViewHolder(view);
@@ -124,6 +125,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
+            Log.v(Globals.TAG, "onChildRemoved");
+
             // a pickup name has been redeemed, use the key to determine
             // if we are displaying this pickup name and if so remove it
             String key = dataSnapshot.getKey();
@@ -145,7 +148,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         @Override
         public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            Log.v(Globals.TAG, "onChildRemoved");
+            Log.v(Globals.TAG, "onChildMoved");
         }
 
         @Override
