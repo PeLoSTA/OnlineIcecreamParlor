@@ -5,10 +5,12 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @IgnoreExtraProperties
 public class OrderModel {
 
+    private String key;
     private String container;
     private List<String> flavors;
     private long pickupName;
@@ -16,6 +18,7 @@ public class OrderModel {
 
     // mandatory: default constructor that takes no arguments
     public OrderModel() {
+        this.key = "";
         this.container = "";
         this.flavors = new ArrayList<>();
         this.pickupName = 0;
@@ -28,30 +31,13 @@ public class OrderModel {
     }
 
     @SuppressWarnings("unused")
-    private String print() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("PickupName: %d", this.pickupName));
-        sb.append(" - ");
-        sb.append(String.format("Num Scoops: %d", this.scoops));
-        sb.append(" - ");
-        sb.append(String.format("Container:  %s", this.container));
-        sb.append(" - ");
+    public String getKey() {
+        return this.key;
+    }
 
-        if (this.flavors == null) {
-            sb.append(String.format("flavors == null "));
-            sb.append(" - ");
-        }
-        else {
-            sb.append(String.format("Flavors:"));
-            sb.append(" - ");
-
-            for (int i = 0; i < this.flavors.size(); i++) {
-                sb.append(String.format("   %d: %s", (i+1), this.flavors.get(i)));
-                sb.append(System.getProperty("line.separator"));
-            }
-        }
-
-        return sb.toString();
+    @SuppressWarnings("unused")
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @SuppressWarnings("unused")
@@ -73,10 +59,6 @@ public class OrderModel {
     public String[] getFlavorsArray() {
         String tmp[] = new String[this.flavors.size()];
         return this.flavors.toArray(tmp);
-
-//        String tmp[] = new String[this.flavors.size()];
-//        String [] result =  this.flavors.toArray(tmp);
-//        return result;
     }
 
     @SuppressWarnings("unused")
@@ -84,7 +66,6 @@ public class OrderModel {
         this.flavors = flavors;
     }
 
-    @NonNull
     public long getPickupName() {
         return this.pickupName;
     }
@@ -102,5 +83,34 @@ public class OrderModel {
     @SuppressWarnings("unused")
     public void setScoops(int scoops) {
         this.scoops = scoops;
+    }
+
+    private String print() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Key: %s", this.key));
+        sb.append(" - ");
+        sb.append(String.format(Locale.getDefault(),"PickupName: %d", this.pickupName));
+        sb.append(" - ");
+        sb.append(String.format(Locale.getDefault(),"Num Scoops: %d", this.scoops));
+        sb.append(" - ");
+        sb.append(String.format("Container:  %s", this.container));
+        sb.append(" - ");
+
+        if (this.flavors == null) {
+            sb.append("flavors == null ");
+            sb.append(" - ");
+        }
+        else {
+
+            sb.append("Flavors: ");
+            sb.append(" - ");
+
+            for (int i = 0; i < this.flavors.size(); i++) {
+                sb.append(String.format(Locale.getDefault(),"   %d: %s", (i+1), this.flavors.get(i)));
+                sb.append(System.getProperty("line.separator"));
+            }
+        }
+
+        return sb.toString();
     }
 }

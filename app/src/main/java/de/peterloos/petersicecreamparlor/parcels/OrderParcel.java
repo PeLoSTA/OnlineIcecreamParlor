@@ -10,6 +10,7 @@ import de.peterloos.petersicecreamparlor.Globals;
 public class OrderParcel implements Parcelable {
 
     // member data
+    private String key;
     private long pickupId;
     private int scoops;
     private String[] flavors;
@@ -29,6 +30,7 @@ public class OrderParcel implements Parcelable {
 
     // system-defined c'tor from Parcel, reads back fields IN THE ORDER they were written
     public OrderParcel(Parcel pc) {
+        this.setKey(pc.readString());
         this.setPickupId(pc.readLong());
         this.setScoops(pc.readInt());
         this.flavors = new String[this.getScoops()];
@@ -37,9 +39,9 @@ public class OrderParcel implements Parcelable {
     }
 
     // user-defined c'tor
-    public OrderParcel(long pickupId, int scoops, String[] flavors, String container) {
+    public OrderParcel(String key, long pickupId, int scoops, String[] flavors, String container) {
+        this.setKey(key);
         this.setPickupId(pickupId);
-        ;
         this.setScoops(scoops);
         this.setFlavors(flavors);
         this.setContainer(container);
@@ -52,11 +54,19 @@ public class OrderParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-
+        parcel.writeString(this.getKey());
         parcel.writeLong(this.getPickupId());
         parcel.writeInt(this.getScoops());
         parcel.writeStringArray(this.getFlavors());
         parcel.writeString(this.getContainer());
+    }
+
+    public String getKey() {
+        return this.key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public long getPickupId() {
