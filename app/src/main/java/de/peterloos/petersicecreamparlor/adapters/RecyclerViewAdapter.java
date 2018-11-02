@@ -14,79 +14,83 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.peterloos.petersicecreamparlor.Globals;
-import de.peterloos.petersicecreamparlor.interfaces.IItemClickListener;
+import de.peterloos.petersicecreamparlor.interfaces.MyItemClickListener;
 import de.peterloos.petersicecreamparlor.models.OrderModel;
 import de.peterloos.petersicecreamparlor.R;
 
-public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private LayoutInflater mInflater;
+    private LayoutInflater inflater;
 
-    private DatabaseReference mDatabaseReference;
-    private ChildEventListener mChildEventListener;
+    private DatabaseReference ordersRef;
+    private ChildEventListener childEventListener;
 
-    private List<OrderModel> mOrders;
-    private List<String> mKeys;
+    private List<OrderModel> orderModels;
+    private List<String> keys;
 
-    private IItemClickListener mClickListener;
+    private MyItemClickListener itemClickListener;
 
-    public RecyclerViewPickupNamesAdapter(final Context context, DatabaseReference ref) {
+    public RecyclerViewAdapter(final Context context) {
 
-        mDatabaseReference = ref;
-        mInflater = LayoutInflater.from(context);
+        this.orderModels = new ArrayList<>();
+        this.keys = new ArrayList<>();
 
-        mOrders = new ArrayList<>();
-        mKeys = new ArrayList<>();
+        this.inflater = LayoutInflater.from(context);
+
+        // initialize database
+        this.ordersRef = FirebaseDatabase.getInstance().getReference().child("orders");
 
         // create firebase child event listener
-        mChildEventListener = new IceParlorChildEventListener();
-        mDatabaseReference.addChildEventListener(mChildEventListener);
+        this.childEventListener = new IceParlorChildEventListener();
+        this.ordersRef.addChildEventListener(this.childEventListener);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+
         // inflate row layout from xml when needed
-        View view = mInflater.inflate(R.layout.recyclerview_row, parent,false);
+        View view = inflater.inflate(R.layout.recyclerview_row, parent,false);
         ViewHolder holder = new ViewHolder(view);
-        holder.setClickListener(mClickListener);
+        holder.setClickListener(this.itemClickListener);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
-        OrderModel order = this.mOrders.get(position);
+        OrderModel order = this.orderModels.get(position);
         viewHolder.getTextView().setText("Pickup Id: " + Long.toString(order.getPickupName()));
     }
 
     @Override
     public int getItemCount() {
-        return mOrders.size();
+        return this.orderModels.size();
     }
 
     // convenience methods for getting data at click position
     public OrderModel getOrder(int id) {
-        return mOrders.get(id);
+        return this.orderModels.get(id);
     }
 
     // allows clicks events to be caught
-    public void setClickListener(IItemClickListener itemClickListener) {
-        mClickListener = itemClickListener;
+    public void setClickListener(MyItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     public void cleanupListener() {
-        if (mClickListener != null) {
-            mClickListener = null;
+        if (this.itemClickListener != null) {
+            this.itemClickListener = null;
         }
 
-        if (mChildEventListener != null) {
-            mDatabaseReference.removeEventListener(mChildEventListener);
+        if (this.childEventListener != null) {
+            this.ordersRef.removeEventListener(this.childEventListener);
         }
     }
 
@@ -99,10 +103,15 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
             OrderModel order = dataSnapshot.getValue(OrderModel.class);
             String key = dataSnapshot.getKey();
 
+            // patch order object with firebase key
+            order.setKey(key);
+
             // insert new order
-            mOrders.add(order);
-            mKeys.add(key);
-            notifyItemInserted(mOrders.size() - 1);
+            RecyclerViewAdapter.this.orderModels.add(order);
+            RecyclerViewAdapter.this.keys.add(key);
+            RecyclerViewAdapter.this.notifyItemInserted(
+                    RecyclerViewAdapter.this.orderModels.size() - 1
+            );
 
             Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
         }
@@ -116,18 +125,20 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
+            Log.v(Globals.TAG, "onChildRemoved");
+
             // a pickup name has been redeemed, use the key to determine
             // if we are displaying this pickup name and if so remove it
             String key = dataSnapshot.getKey();
 
-            int index = mKeys.indexOf(key);
+            int index = RecyclerViewAdapter.this.keys.indexOf(key);
             if (index > -1) {
                 // Remove data from the list
-                mOrders.remove(index);
-                mKeys.remove(index);
+                RecyclerViewAdapter.this.orderModels.remove(index);
+                RecyclerViewAdapter.this.keys.remove(index);
 
                 // update the recycler view
-                notifyItemRemoved(index);
+                RecyclerViewAdapter.this.notifyItemRemoved(index);
                 Log.v(Globals.TAG, "onChildRemoved: removed pickname at " + Integer.toString(index));
             } else {
                 Log.w(Globals.TAG, "Internal Error: onChildRemoved: unknown_child = " + key);
@@ -137,7 +148,7 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
         @Override
         public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            Log.v(Globals.TAG, "onChildRemoved");
+            Log.v(Globals.TAG, "onChildMoved");
         }
 
         @Override
@@ -150,29 +161,29 @@ public class RecyclerViewPickupNamesAdapter extends RecyclerView.Adapter<ViewHol
 
 class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private TextView mTextView;
-    private IItemClickListener mClickListener;
+    private TextView textView;
+    private MyItemClickListener clickListener;
 
     public ViewHolder(View itemView) {
         super(itemView);
 
-        mTextView = itemView.findViewById(R.id.tvPickupName);
+        this.textView = itemView.findViewById(R.id.tvPickupName);
         itemView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
-        if (mClickListener != null) {
-            mClickListener.onItemClick(view, this.getAdapterPosition());
+        if (this.clickListener != null) {
+            this.clickListener.onItemClick(view, this.getAdapterPosition());
         }
     }
 
     public TextView getTextView() {
-        return mTextView;
+        return this.textView;
     }
 
-    public void setClickListener(IItemClickListener clickListener) {
-        this.mClickListener = clickListener;
+    public void setClickListener(MyItemClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }
