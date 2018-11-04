@@ -1,6 +1,8 @@
 package de.peterloos.petersicecreamparlor.activities;
 
 import android.content.DialogInterface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,11 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import de.peterloos.petersicecreamparlor.Globals;
@@ -76,6 +83,18 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
 
         String sContainer = "Container: " + this.parcel.getContainer();
         textViewContainer.setText(sContainer);
+
+        // NEU
+        long ts = parcel.getTimeStamp();
+        Date date = new Date(ts);
+
+        String msg = String.format(Locale.getDefault(), "  =============> %s", date.toString());
+        Log.v(Globals.TAG, msg);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String sss = sdf.format(date);
+        Log.v(Globals.TAG, sss);
+
     }
 
     @Override
