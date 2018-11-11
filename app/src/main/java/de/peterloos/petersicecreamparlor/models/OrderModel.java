@@ -11,6 +11,7 @@ import java.util.Locale;
 public class OrderModel {
 
     private String key;
+    private long timeOfOrder;
     private String container;
     private List<String> flavors;
     private long pickupName;
@@ -19,6 +20,7 @@ public class OrderModel {
     // mandatory: default constructor that takes no arguments
     public OrderModel() {
         this.key = "";
+        this.timeOfOrder = 0;
         this.container = "";
         this.flavors = new ArrayList<>();
         this.pickupName = 0;
@@ -34,6 +36,16 @@ public class OrderModel {
     @SuppressWarnings("unused")
     public String getKey() {
         return this.key;
+    }
+
+    @SuppressWarnings("unused")
+    public long getTimeOfOrder() {
+        return this.timeOfOrder;
+    }
+
+    @SuppressWarnings("unused")
+    public void setTimeOfOrder(long timeOfOrder) {
+        this.timeOfOrder = timeOfOrder;
     }
 
     @SuppressWarnings("unused")
@@ -88,7 +100,7 @@ public class OrderModel {
 
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Key: %s", this.key));
+        sb.append(String.format("Key: %s [TimeStamp: %d]", this.key, this.timeOfOrder));
         sb.append(" - ");
         sb.append(String.format(Locale.getDefault(),"PickupName: %d", this.pickupName));
         sb.append(" - ");

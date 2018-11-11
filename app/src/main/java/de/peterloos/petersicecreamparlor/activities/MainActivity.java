@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MyItemClickListen
         Intent intent = new Intent(this.getApplicationContext(), DetailsViewActivity.class);
         OrderParcel parcel = new OrderParcel(
                 order.getKey(),
+                order.getTimeOfOrder(),
                 order.getPickupName(),
                 order.getScoops(),
                 order.getFlavorsArray(),

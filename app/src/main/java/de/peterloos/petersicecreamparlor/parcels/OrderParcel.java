@@ -12,6 +12,7 @@ public class OrderParcel implements Parcelable {
 
     // member data
     private String key;
+    private long timeStamp;
     private long pickupId;
     private int scoops;
     private String[] flavors;
@@ -32,6 +33,7 @@ public class OrderParcel implements Parcelable {
     // system-defined c'tor from Parcel, reads back fields IN THE ORDER they were written
     public OrderParcel(Parcel pc) {
         this.setKey(pc.readString());
+        this.setTimeStamp(pc.readLong());
         this.setPickupId(pc.readLong());
         this.setScoops(pc.readInt());
         this.flavors = new String[this.getScoops()];
@@ -40,8 +42,9 @@ public class OrderParcel implements Parcelable {
     }
 
     // user-defined c'tor
-    public OrderParcel(String key, long pickupId, int scoops, String[] flavors, String container) {
+    public OrderParcel(String key, long timeStamp, long pickupId, int scoops, String[] flavors, String container) {
         this.setKey(key);
+        this.setTimeStamp(timeStamp);
         this.setPickupId(pickupId);
         this.setScoops(scoops);
         this.setFlavors(flavors);
@@ -56,6 +59,7 @@ public class OrderParcel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(this.getKey());
+        parcel.writeLong(this.getTimeStamp());
         parcel.writeLong(this.getPickupId());
         parcel.writeInt(this.getScoops());
         parcel.writeStringArray(this.getFlavors());
@@ -68,6 +72,14 @@ public class OrderParcel implements Parcelable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public long getTimeStamp() {
+        return this.timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public long getPickupId() {
@@ -112,6 +124,8 @@ public class OrderParcel implements Parcelable {
     private String print() {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.getDefault(),"PickupId: %d", this.pickupId));
+        sb.append(" - ");
+        sb.append(String.format(Locale.getDefault(),"TimeStamp: %d", this.timeStamp));
         sb.append(" - ");
         sb.append(String.format(Locale.getDefault(),"Num Scoops: %d", this.scoops));
         sb.append(" - ");

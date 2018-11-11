@@ -113,7 +113,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     RecyclerViewAdapter.this.orderModels.size() - 1
             );
 
-            Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
+            // Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
+            Log.v(Globals.TAG, "onChildAdded: " + order.toString());
         }
 
         @Override
