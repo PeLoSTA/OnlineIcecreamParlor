@@ -1,8 +1,6 @@
 package de.peterloos.petersicecreamparlor.activities;
 
 import android.content.DialogInterface;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +13,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
+import java.text.DateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import de.peterloos.petersicecreamparlor.Globals;
@@ -56,6 +51,7 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
         TextView textViewScoops = this.findViewById(R.id.textViewScoops);
         TextView textViewFlavors = this.findViewById(R.id.textViewFlavors);
         TextView textViewContainer = this.findViewById(R.id.textViewContainer);
+        TextView textViewDateTime = this.findViewById(R.id.textViewDateTime);
         Button buttonCheckout = this.findViewById(R.id.buttonCheckout);
         buttonCheckout.setOnClickListener(this);
 
@@ -84,17 +80,14 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
         String sContainer = "Container: " + this.parcel.getContainer();
         textViewContainer.setText(sContainer);
 
-        // NEU
         long ts = parcel.getTimeStamp();
         Date date = new Date(ts);
+        String s1 = DateFormat.getDateInstance().format(date);
+        String s2 = DateFormat.getTimeInstance().format(date);
+        String[] parts = s2.split(":");
 
-        String msg = String.format(Locale.getDefault(), "  =============> %s", date.toString());
-        Log.v(Globals.TAG, msg);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String sss = sdf.format(date);
-        Log.v(Globals.TAG, sss);
-
+        String date_time = "From " + s1 + " at "  + parts[0] + ":" + parts[1];
+        textViewDateTime.setText(date_time);
     }
 
     @Override
