@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MyItemClickListen
     public void onItemClick(View view, int position) {
 
         OrderModel order = this.adapter.getOrder(position);
-        Intent intent = new Intent(this.getApplicationContext(), DetailsViewActivity.class);
+        Intent intent = new Intent(this.getApplicationContext(), DetailsActivity.class);
         OrderParcel parcel = new OrderParcel(
                 order.getKey(),
                 order.getTimeOfOrder(),

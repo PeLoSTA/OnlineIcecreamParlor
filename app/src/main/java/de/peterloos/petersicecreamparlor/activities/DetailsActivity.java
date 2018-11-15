@@ -21,7 +21,7 @@ import de.peterloos.petersicecreamparlor.Globals;
 import de.peterloos.petersicecreamparlor.R;
 import de.peterloos.petersicecreamparlor.parcels.OrderParcel;
 
-public class DetailsViewActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private OrderParcel parcel;
 
@@ -30,7 +30,7 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_details_view);
 
-        Log.v(Globals.TAG, "DetailsViewActivity::onCreate");
+        Log.v(Globals.TAG, "DetailsActivity::onCreate");
 
         // retrieve data from main activity
         this.parcel = null;
@@ -99,21 +99,21 @@ public class DetailsViewActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int id) {
 
                 String msg = String.format(Locale.getDefault(), "Checking out order with id %d !",
-                        DetailsViewActivity.this.parcel.getPickupId());
+                        DetailsActivity.this.parcel.getPickupId());
 
-                Toast.makeText(DetailsViewActivity.this, msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_LONG).show();
 
                 // check out this order: delete corresponding data in firebase backend
-                DetailsViewActivity.this.deleteOrder();
+                DetailsActivity.this.deleteOrder();
 
                 // navigate back to main activity
-                DetailsViewActivity.this.finish();
+                DetailsActivity.this.finish();
             }
         });
         builder.setNegativeButton(R.string.no_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Toast.makeText(
-                        DetailsViewActivity.this,
+                        DetailsActivity.this,
                         R.string.action_cancelled,
                         Toast.LENGTH_LONG).show();
             }
