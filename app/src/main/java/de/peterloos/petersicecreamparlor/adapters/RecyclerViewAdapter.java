@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.peterloos.petersicecreamparlor.Globals;
 import de.peterloos.petersicecreamparlor.interfaces.MyItemClickListener;
@@ -26,22 +27,24 @@ import de.peterloos.petersicecreamparlor.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
+    private Context context;
     private LayoutInflater inflater;
-
-    private DatabaseReference ordersRef;
-    private ChildEventListener childEventListener;
 
     private List<OrderModel> orderModels;
     private List<String> keys;
+
+    private DatabaseReference ordersRef;
+    private ChildEventListener childEventListener;
 
     private MyItemClickListener itemClickListener;
 
     public RecyclerViewAdapter(final Context context) {
 
+        this.context = context;
+        this.inflater = LayoutInflater.from(this.context);
+
         this.orderModels = new ArrayList<>();
         this.keys = new ArrayList<>();
-
-        this.inflater = LayoutInflater.from(context);
 
         // initialize database
         this.ordersRef = FirebaseDatabase.getInstance().getReference().child("orders");
@@ -66,7 +69,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
 
         OrderModel order = this.orderModels.get(position);
-        viewHolder.getTextView().setText("Pickup Id: " + Long.toString(order.getPickupName()));
+
+        String sId = this.context.getResources().getString(R.string.pickup_id);
+        String sRow = String.format(Locale.getDefault(), "%s: %s",
+                sId, Long.toString(order.getPickupName()));
+        viewHolder.getTextView().setText(sRow);
     }
 
     @Override

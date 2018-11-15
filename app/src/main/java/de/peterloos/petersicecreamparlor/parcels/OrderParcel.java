@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 
 import java.util.Locale;
 
-
 @SuppressWarnings("WeakerAccess")
 public class OrderParcel implements Parcelable {
 
@@ -42,7 +41,8 @@ public class OrderParcel implements Parcelable {
     }
 
     // user-defined c'tor
-    public OrderParcel(String key, long timeStamp, long pickupId, int scoops, String[] flavors, String container) {
+    public OrderParcel(String key, long timeStamp, long pickupId,
+                       int scoops, String[] flavors, String container) {
         this.setKey(key);
         this.setTimeStamp(timeStamp);
         this.setPickupId(pickupId);
@@ -123,13 +123,13 @@ public class OrderParcel implements Parcelable {
     @SuppressWarnings("unused")
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.getDefault(),"PickupId: %d", this.pickupId));
+        sb.append(String.format(Locale.getDefault(), "PickupId: %d", this.pickupId));
         sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(),"TimeStamp: %d", this.timeStamp));
+        sb.append(String.format(Locale.getDefault(), "TimeStamp: %d", this.timeStamp));
         sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(),"Num Scoops: %d", this.scoops));
+        sb.append(String.format(Locale.getDefault(), "Num Scoops: %d", this.scoops));
         sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(),"Container: %s", this.container));
+        sb.append(String.format(Locale.getDefault(), "Container: %s", this.container));
         sb.append(" - ");
 
         if (this.flavors == null) {
@@ -139,7 +139,8 @@ public class OrderParcel implements Parcelable {
             sb.append("Flavors:");
             sb.append(" - ");
             for (int i = 0; i < this.flavors.length; i++) {
-                sb.append(String.format(Locale.getDefault(),"   %d: %s", (i + 1), this.flavors[i]));
+                sb.append(String.format(Locale.getDefault(),
+                        "   %d: %s", (i + 1), this.flavors[i]));
             }
         }
 

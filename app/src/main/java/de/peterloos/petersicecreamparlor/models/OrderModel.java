@@ -34,11 +34,6 @@ public class OrderModel {
     }
 
     @SuppressWarnings("unused")
-    public String getKey() {
-        return this.key;
-    }
-
-    @SuppressWarnings("unused")
     public long getTimeOfOrder() {
         return this.timeOfOrder;
     }
@@ -46,6 +41,11 @@ public class OrderModel {
     @SuppressWarnings("unused")
     public void setTimeOfOrder(long timeOfOrder) {
         this.timeOfOrder = timeOfOrder;
+    }
+
+    @SuppressWarnings("unused")
+    public String getKey() {
+        return this.key;
     }
 
     @SuppressWarnings("unused")

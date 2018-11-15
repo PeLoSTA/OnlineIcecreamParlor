@@ -5,4 +5,5 @@
     <string name="yes_action">Yes</string>
     <string name="no_action">No</string>
     <string name="action_cancelled">Checkout cancelled !</string>
+    <string name="pickup_id">Pickup Id</string>
 </resources>
