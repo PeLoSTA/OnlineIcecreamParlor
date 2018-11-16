@@ -86,7 +86,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         String s2 = DateFormat.getTimeInstance().format(date);
         String[] parts = s2.split(":");
 
-        String date_time = "From " + s1 + " at "  + parts[0] + ":" + parts[1];
+        String date_time = "From " + s1 + " at " + parts[0] + ":" + parts[1];
         textViewDateTime.setText(date_time);
     }
 
@@ -98,8 +98,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         builder.setPositiveButton(R.string.yes_action, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                String msg = String.format(Locale.getDefault(), "Checking out order with id %d !",
-                        DetailsActivity.this.parcel.getPickupId());
+                String msg =
+                        String.format(Locale.getDefault(), "Checking out order with id %d !",
+                                DetailsActivity.this.parcel.getPickupId());
 
                 Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_LONG).show();
 

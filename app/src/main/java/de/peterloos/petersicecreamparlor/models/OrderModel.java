@@ -1,6 +1,7 @@
 package de.peterloos.petersicecreamparlor.models;
 
 import android.support.annotation.NonNull;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -100,11 +101,14 @@ public class OrderModel {
 
     private String print() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Key: %s [TimeStamp: %d]", this.key, this.timeOfOrder));
+        String s =
+                String.format(Locale.getDefault(),
+                        "Key: %s [TimeStamp: %d]", this.key, this.timeOfOrder);
+        sb.append(s);
         sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(),"PickupName: %d", this.pickupName));
+        sb.append(String.format(Locale.getDefault(), "PickupName: %d", this.pickupName));
         sb.append(" - ");
-        sb.append(String.format(Locale.getDefault(),"Num Scoops: %d", this.scoops));
+        sb.append(String.format(Locale.getDefault(), "Num Scoops: %d", this.scoops));
         sb.append(" - ");
         sb.append(String.format("Container:  %s", this.container));
         sb.append(" - ");
@@ -112,14 +116,15 @@ public class OrderModel {
         if (this.flavors == null) {
             sb.append("flavors == null ");
             sb.append(" - ");
-        }
-        else {
+        } else {
 
             sb.append("Flavors: ");
             sb.append(" - ");
 
             for (int i = 0; i < this.flavors.size(); i++) {
-                sb.append(String.format(Locale.getDefault(),"   %d: %s", (i+1), this.flavors.get(i)));
+                String flav = String.format(Locale.getDefault(), "   %d: %s",
+                        (i + 1), this.flavors.get(i));
+                sb.append(flav);
                 sb.append(System.getProperty("line.separator"));
             }
         }
