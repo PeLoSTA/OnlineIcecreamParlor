@@ -31,13 +31,7 @@ public class OrderParcel implements Parcelable {
 
     // system-defined c'tor from Parcel, reads back fields IN THE ORDER they were written
     public OrderParcel(Parcel pc) {
-        this.setKey(pc.readString());
-        this.setTimeStamp(pc.readLong());
-        this.setPickupId(pc.readLong());
-        this.setScoops(pc.readInt());
-        this.flavors = new String[this.getScoops()];
-        pc.readStringArray(this.getFlavors());
-        this.setContainer(pc.readString());
+        this.readFromParcel(pc);
     }
 
     // user-defined c'tor
@@ -57,13 +51,23 @@ public class OrderParcel implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(this.getKey());
-        parcel.writeLong(this.getTimeStamp());
-        parcel.writeLong(this.getPickupId());
-        parcel.writeInt(this.getScoops());
-        parcel.writeStringArray(this.getFlavors());
-        parcel.writeString(this.getContainer());
+    public void writeToParcel(Parcel to, int flags) {
+        to.writeString(this.getKey());
+        to.writeLong(this.getTimeStamp());
+        to.writeLong(this.getPickupId());
+        to.writeInt(this.getScoops());
+        to.writeStringArray(this.getFlavors());
+        to.writeString(this.getContainer());
+    }
+
+    private void readFromParcel(Parcel in) {
+        this.setKey(in.readString());
+        this.setTimeStamp(in.readLong());
+        this.setPickupId(in.readLong());
+        this.setScoops(in.readInt());
+        this.flavors = new String[this.getScoops()];
+        in.readStringArray(this.getFlavors());
+        this.setContainer(in.readString());
     }
 
     public String getKey() {
