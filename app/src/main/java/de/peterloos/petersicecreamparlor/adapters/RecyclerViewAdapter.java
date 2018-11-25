@@ -59,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
 
         // inflate row layout from xml when needed
-        View view = inflater.inflate(R.layout.recyclerview_row, parent,false);
+        View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
         ViewHolder holder = new ViewHolder(view);
         holder.setClickListener(this.itemClickListener);
         return holder;
@@ -104,7 +104,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
     private class IceParlorChildEventListener implements ChildEventListener {
 
         @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        public void onChildAdded(
+                @NonNull DataSnapshot dataSnapshot,
+                @Nullable String s) {
 
             // a new order has been added, add it to the displayed list
             OrderModel order = dataSnapshot.getValue(OrderModel.class);
@@ -120,12 +122,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                     RecyclerViewAdapter.this.orderModels.size() - 1
             );
 
-            // Log.v(Globals.TAG, "onChildAdded: added pickname  " + order.getPickupName());
             Log.v(Globals.TAG, "onChildAdded: " + order.toString());
         }
 
         @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        public void onChildChanged(
+                @NonNull DataSnapshot dataSnapshot,
+                @Nullable String s) {
 
             Log.v(Globals.TAG, "onChildChanged");
         }
@@ -133,7 +136,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            Log.v(Globals.TAG, "onChildRemoved");
+            String logMsg = "onChildRemoved";
+            Log.v(Globals.TAG, logMsg);
 
             // a pickup name has been redeemed, use the key to determine
             // if we are displaying this pickup name and if so remove it
@@ -147,10 +151,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
 
                 // update the recycler view
                 RecyclerViewAdapter.this.notifyItemRemoved(index);
-                Log.v(Globals.TAG, "onChildRemoved: removed pickname at " + Integer.toString(index));
+                logMsg = String.format(
+                        Locale.getDefault(),
+                        "onChildRemoved: removed pickname at %s",
+                        Integer.toString(index));
             } else {
-                Log.w(Globals.TAG, "Internal Error: onChildRemoved: unknown_child = " + key);
+                logMsg = String.format(
+                        Locale.getDefault(),
+                        "Internal Error: onChildRemoved: unknown_child = %s",
+                        key);
             }
+
+            Log.v(Globals.TAG, logMsg);
         }
 
         @Override

@@ -95,30 +95,38 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Checkout Order?");
-        builder.setPositiveButton(R.string.yes_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        builder.setPositiveButton(
+            R.string.yes_action,
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
 
-                String msg =
-                        String.format(Locale.getDefault(), "Checking out order with id %d !",
-                                DetailsActivity.this.parcel.getPickupId());
+                    String msg = String.format(
+                        Locale.getDefault(),
+                        "Checking out order with id %d !",
+                        DetailsActivity.this.parcel.getPickupId()
+                    );
 
-                Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_LONG).show();
 
-                // check out this order: delete corresponding data in firebase backend
-                DetailsActivity.this.deleteOrder();
+                    // check out this order: delete corresponding data in firebase backend
+                    DetailsActivity.this.deleteOrder();
 
-                // navigate back to main activity
-                DetailsActivity.this.finish();
+                    // navigate back to main activity
+                    DetailsActivity.this.finish();
+                }
             }
-        });
-        builder.setNegativeButton(R.string.no_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(
-                        DetailsActivity.this,
-                        R.string.action_cancelled,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
+        );
+        builder.setNegativeButton(
+                R.string.no_action,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(
+                                DetailsActivity.this,
+                                R.string.action_cancelled,
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
 
         // create the AlertDialog object and show it
         builder.create();
@@ -128,7 +136,13 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     public void deleteOrder() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("orders").child(this.parcel.getKey());
+
+        DatabaseReference ref =
+            database.
+            getReference().
+            child("orders").
+            child(this.parcel.getKey());
+
         ref.removeValue();
     }
 }
